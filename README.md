@@ -1,2 +1,2 @@
-# luogu
+# code
 刷题
