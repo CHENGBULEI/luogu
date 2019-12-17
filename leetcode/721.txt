@@ -1,0 +1,78 @@
+class Solution {
+public:
+//并查集，对于每一个邮箱建立一个集合，在相同集合的账户是同一个账户
+    int jihe[len]={0};
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        vector<string>::iterator it;
+        map<string,set<int> >res;
+        pair<string,set<int> >tmp;
+        pair<map<string,set<int> >::iterator,map<string,set<int> >::iterator >p1;
+        int len = accounts.size();
+        int i,j;
+        
+        for(i=0;i<len;i++){
+            jihe[i]=i;   
+        }
+        for(i=0;i<len;i++){
+            int lenz = accounts[i].size();
+            for(j=1;j<lenz;j++){
+                p1 = res.find(accounts[i][j]);
+                if(p1.first==res.end()){
+                    tmp.first = accounts[i][j];
+                    tmp.second.insert(i); 
+                    res.insert(tmp);
+                }else{
+                    tmp = *p1.first;
+                    uion((*tmp.second.begin()),i);  
+                    tmp.second.insert(i);
+                    res.erase(p1.first);
+                    res.insert(tmp);
+                    
+                }
+            }
+        }
+        int lenzz = res.size();
+        vector<vector<string> >jieguo;
+        vector<string>r;
+        map<string,vector<string> >rr;
+        string s;
+        for(i=0;i<lenzz;i++){
+            s = accounts[jihe[(*res[i].second.begin())]][0];
+            if(rr.find(s).first==rr.end()){
+                r.push_back()
+                rr.push_back(res[i].first,);
+            }else{
+
+            }
+        }
+    }
+    void uion(int &i,int &j){
+        int x = find(i);
+        int y = find(j);
+        if(x!=y){
+            jihe[i] = y;
+
+        }
+    }
+
+    int find(int &i){
+        if(i==jihe[i]){
+            return i;
+        }else{
+            int j = i;
+            int tmp;
+            //压缩路径，将所有集合置为根节点编号
+            while(i!=jihe[i]){
+                tmp = jihe[i];
+                i = tmp;
+            }
+            //从最底层的节点开始
+            while(j!=jihe[j]){
+                tmp = jihe[j];
+                jihe[j] = i;
+                j = tmp;
+            }
+            return jihe[i];
+        }
+    }
+};
