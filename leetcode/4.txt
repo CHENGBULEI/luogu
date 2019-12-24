@@ -1,0 +1,57 @@
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int len1 = nums1.size();
+        int len2 = nums2.size();
+        
+        if(len1>len2){
+            return find(nums2,nums1);
+        }else{
+            return find(nums1,nums2);
+        }
+        
+    }
+    double find(vector<int>&first,vector<int>&second){
+        int f = first.size();
+        int s = second.size();
+        int half = (f+s+1)/2;//j = (m+n+1)/2-i;
+        int i=0;//指向分隔点下一个位置
+        int j=half-i;
+        //从较小的数组开始进行二分查找
+        int imin =0;
+        int imax = f;
+        while(imin<=imax){
+            //保证分隔的两边为相同长度i+j = m+n-i-j;
+            i = (imin+imax)/2;
+            j = half-i;
+            if(i<imax&&first[i]<second[j-1]){
+                imin=i+1;//小了
+            }else if(i>imin&&first[i-1]>second[j]){
+                imax = i-1;//大了
+            }else{
+                //边界条件i=0,i=f；
+                int maxlelf = 0;
+                if(i==0){
+                    maxlelf= second[j-1];
+                }else if(j==0){
+                    maxlelf = first[i-1];
+                }else{
+                    maxlelf = max(second[j-1],first[i-1]);
+                }
+                if((f+s)%2==1) return maxlelf;
+
+                int minright = 0;
+                if(i==f){
+                    minright = second[j];
+                }else if(j==s){
+                    minright = first[i];
+                }else{
+                    minright = min(second[j],first[i]);
+                }
+                return (minright+maxlelf)/2.0;
+            }
+
+        }
+        return 0.0;
+    }
+};
